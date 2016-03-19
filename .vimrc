@@ -21,7 +21,6 @@ syntax enable
 set t_Co=256
 set background=dark
 colorscheme iceberg
-:let g:airline_theme='base16'
 
 "Highlighting
 set number
