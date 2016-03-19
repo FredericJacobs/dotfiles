@@ -1,0 +1,18 @@
+#!/bin/sh
+
+echo "🆕 Updating System (root)"
+sudo softwareupdate --install --all
+
+echo "🆕 Updating Gems";
+gem update;
+
+echo "🆕 Updating Brew";
+brew update;
+brew upgrade;
+
+echo "🆕 Updating Node";
+npm update;
+npm upgrade;
+
+echo "🆕 Updating Rust";
+multirust update;

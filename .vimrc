@@ -1,106 +1,84 @@
-" Use the Solarized Dark theme
-set background=dark
-colorscheme solarized
-let g:solarized_termtrans=1
-
-" Make Vim more useful
+" Plugins
 set nocompatible
-" Use the OS clipboard by default (on versions compiled with `+clipboard`)
-set clipboard=unnamed
-" Enhance command-line completion
-set wildmenu
-" Allow cursor keys in insert mode
-set esckeys
-" Allow backspace in insert mode
-set backspace=indent,eol,start
-" Optimize for fast terminal connections
-set ttyfast
-" Add the g flag to search/replace by default
-set gdefault
-" Use UTF-8 without BOM
-set encoding=utf-8 nobomb
-" Change mapleader
-let mapleader=","
-" Don’t add empty newlines at the end of files
-set binary
-set noeol
-" Centralize backups, swapfiles and undo history
-set backupdir=~/.vim/backups
-set directory=~/.vim/swaps
-if exists("&undodir")
-	set undodir=~/.vim/undo
-endif
+filetype off
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+Bundle 'gmarik/Vundle.vim'
+Bundle 'kien/ctrlp.vim'
+Bundle 'tpope/vim-fugitive'
+Bundle 'airblade/vim-gitgutter'
+Bundle 'bling/vim-airline'
+Bundle 'jelera/vim-javascript-syntax'
+Bundle 'leafgarland/typescript-vim'
+Bundle 'sudar/vim-arduino-syntax'
+Bundle 'plasticboy/vim-markdown'
+Bundle 'scrooloose/nerdtree'
+call vundle#end()
+filetype plugin on
 
-" Don’t create backups when editing files in certain directories
-set backupskip=/tmp/*,/private/tmp/*
+" Colors
+syntax enable
+set t_Co=256
+set background=dark
+colorscheme iceberg
+:let g:airline_theme='base16'
 
-" Respect modeline in files
-set modeline
-set modelines=4
-" Enable per-directory .vimrc files and disable unsafe commands in them
-set exrc
-set secure
-" Enable line numbers
+"Highlighting
 set number
-" Enable syntax highlighting
-syntax on
-" Highlight current line
 set cursorline
-" Make tabs as wide as two spaces
-set tabstop=2
-" Show “invisible” characters
-set lcs=tab:▸\ ,trail:·,eol:¬,nbsp:_
-set list
-" Highlight searches
-set hlsearch
-" Ignore case of searches
-set ignorecase
-" Highlight dynamically as pattern is typed
-set incsearch
-" Always show status line
-set laststatus=2
-" Enable mouse in all modes
-set mouse=a
-" Disable error bells
-set noerrorbells
-" Don’t reset cursor to start of line when moving around.
-set nostartofline
-" Show the cursor position
-set ruler
-" Don’t show the intro message when starting Vim
-set shortmess=atI
-" Show the current mode
-set showmode
-" Show the filename in the window titlebar
-set title
-" Show the (partial) command as it’s being typed
 set showcmd
-" Use relative line numbers
-if exists("&relativenumber")
-	set relativenumber
-	au BufReadPost * set relativenumber
-endif
-" Start scrolling three lines before the horizontal window border
-set scrolloff=3
+set showmatch
+au BufNewFile,BufRead *.pv set filetype=ocaml
 
-" Strip trailing whitespace (,ss)
-function! StripWhitespace()
-	let save_cursor = getpos(".")
-	let old_query = getreg('/')
-	:%s/\s\+$//e
-	call setpos('.', save_cursor)
-	call setreg('/', old_query)
-endfunction
-noremap <leader>ss :call StripWhitespace()<CR>
-" Save a file as root (,W)
-noremap <leader>W :w !sudo tee % > /dev/null<CR>
+"Formatting
+set smarttab
+set autoindent
+set noexpandtab
+set tabstop=4
+set shiftwidth=4
+set wrap
+set ffs=unix,dos,mac
+set encoding=utf8
 
-" Automatic commands
-if has("autocmd")
-	" Enable file type detection
-	filetype on
-	" Treat .json files as .js
-	autocmd BufNewFile,BufRead *.json setfiletype json syntax=javascript
-	" Treat .md files as Markdown
-	autocmd BufNewFile,BufRead *.md setlocal filetype=markdown
-endif
+"Reading
+set autoread
+
+"Disable .swp backups
+set nobackup
+
+"Search
+set magic
+set incsearch
+set hlsearch
+set ignorecase
+set smartcase
+
+"Surrounding UX
+set nofoldenable
+set lazyredraw
+set clipboard=unnamed
+set esckeys
+set backspace=indent,eol,start
+set ttyfast
+set nostartofline
+set noshowmode
+set wildmenu
+set ruler
+set laststatus=2
+let g:airline_powerline_fonts=1
+:au FileChangedShell * echo "Warning: File changed on disk"
+
+"Mappings
+" Ctrl+K to repeat last colon command
+noremap <C-K> @:<CR>
+" Tab navigation closer to split navigation
+map <C-E><C-E> :tabnext<CR>
+" Move through wrapped lines
+nmap <silent> j gj
+nmap <silent> k gk
+nmap <silent> <Down> gj
+nmap <silent> <Up> gk
+imap <silent> <Down> <C-o>gj
+imap <silent> <Up> <C-o>gk
+" Toggle NERDTree
+map <C-N> :NERDTreeToggle<CR>
